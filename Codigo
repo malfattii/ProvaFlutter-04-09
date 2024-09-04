@@ -1,1 +1,157 @@
+import 'dart:math';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(
+    home: HomePage(),
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      useMaterial3: false,
+      primarySwatch: Colors.green,
+    ),
+  ));
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String _computerChoice = '';
+  String _result = '';
+  int _playerWins = 0;
+  int _computerWins = 0;
+
+  final List<String> _options = ['Pedra', 'Papel', 'Tesoura'];
+
+  void _makeComputerChoice() {
+    final random = Random();
+    _computerChoice = _options[random.nextInt(3)];
+  }
+
+  void _playGame(String playerChoice) {
+    _makeComputerChoice();
+
+    if (playerChoice == _computerChoice) {
+      _result = 'Empate';
+    } else if ((playerChoice == 'Pedra' && _computerChoice == 'Tesoura') ||
+        (playerChoice == 'Papel' && _computerChoice == 'Pedra') ||
+        (playerChoice == 'Tesoura' && _computerChoice == 'Papel')) {
+      _result = 'Você venceu!';
+      _playerWins++;
+    } else {
+      _result = 'Você perdeu!';
+      _computerWins++;
+    }
+
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Jogo'),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Sua Jogada',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                onTap: () => _playGame('Pedra'),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  width: 80,
+                  height: 80,
+                  child: Center(
+                      child:
+                          Text('Pedra', style: TextStyle(color: Colors.black))),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => _playGame('Papel'),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  width: 80,
+                  height: 80,
+                  child: Center(
+                      child:
+                          Text('Papel', style: TextStyle(color: Colors.black))),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => _playGame('Tesoura'),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  width: 80,
+                  height: 80,
+                  child: Center(
+                      child: Text('Tesoura',
+                          style: TextStyle(color: Colors.black))),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Jogada do computador',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(100),
+            ),
+            width: 80,
+            height: 80,
+            child: Center(
+                child: Text(_computerChoice,
+                    style: TextStyle(color: Colors.black))),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              _result,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Placar: Jogador $_playerWins - $_computerWins Computador',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
